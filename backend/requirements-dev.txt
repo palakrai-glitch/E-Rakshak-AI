@@ -1,0 +1,15 @@
+# E-Rakshak AI — Backend Development & Test Dependencies
+#
+# Install alongside requirements.txt:
+#   pip install -r requirements.txt -r requirements-dev.txt
+
+# ── Testing ────────────────────────────────────────────────────────────────────
+pytest>=8.2.0,<9.0.0
+pytest-asyncio>=0.23.0,<0.24.0
+httpx>=0.27.0,<0.28.0        # Required by FastAPI's TestClient (async support)
+
+# ── Linting / formatting ───────────────────────────────────────────────────────
+ruff>=0.4.0,<0.5.0
+
+# ── Test Database ──────────────────────────────────────────────────────────────
+aiosqlite>=0.20.0,<0.21.0

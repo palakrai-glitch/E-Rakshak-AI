@@ -1,0 +1,8 @@
+# shadcn/ui UI components
+#
+# This directory will contain shadcn/ui components when they are added
+# using the shadcn CLI in future phases.
+#
+# Installation (when ready):
+#   npx shadcn@latest init
+#   npx shadcn@latest add button card badge ...

@@ -1,0 +1,202 @@
+{
+    "type": "FeatureCollection",
+    "name": "Hospital Resources (SYNTHETIC DEMO DATA)",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "hospital_id": "H001",
+                "name": "All India Institute of Medical Sciences (AIIMS), Raipur",
+                "SYNTHETIC_DEMO_available_beds": 34,
+                "SYNTHETIC_DEMO_icu_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_oxygen_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_emergency_capability": true,
+                "SYNTHETIC_DEMO_trauma_capability": true,
+                "SYNTHETIC_DEMO_status": "AVAILABLE",
+                "SYNTHETIC_DEMO_current_load": "LOW",
+                "SYNTHETIC_DEMO_specialties": [
+                    "Cardiology",
+                    "Neurology",
+                    "Orthopedics"
+                ]
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    81.57862,
+                    21.25651
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "hospital_id": "H002",
+                "name": "Dr. B.R. Ambedkar Memorial Hospital",
+                "SYNTHETIC_DEMO_available_beds": 25,
+                "SYNTHETIC_DEMO_icu_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_oxygen_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_emergency_capability": true,
+                "SYNTHETIC_DEMO_trauma_capability": true,
+                "SYNTHETIC_DEMO_status": "AVAILABLE",
+                "SYNTHETIC_DEMO_current_load": "LOW",
+                "SYNTHETIC_DEMO_specialties": [
+                    "General Medicine"
+                ]
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    81.63733,
+                    21.24151
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "hospital_id": "H003",
+                "name": "Ramkrishna CARE Hospital",
+                "SYNTHETIC_DEMO_available_beds": 31,
+                "SYNTHETIC_DEMO_icu_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_oxygen_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_emergency_capability": true,
+                "SYNTHETIC_DEMO_trauma_capability": true,
+                "SYNTHETIC_DEMO_status": "AVAILABLE",
+                "SYNTHETIC_DEMO_current_load": "LOW",
+                "SYNTHETIC_DEMO_specialties": [
+                    "Cardiology",
+                    "Neurology",
+                    "Orthopedics"
+                ]
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    81.64412,
+                    21.21856
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "hospital_id": "H004",
+                "name": "NH MMI Narayana Superspeciality Hospital",
+                "SYNTHETIC_DEMO_available_beds": 41,
+                "SYNTHETIC_DEMO_icu_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_oxygen_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_emergency_capability": true,
+                "SYNTHETIC_DEMO_trauma_capability": false,
+                "SYNTHETIC_DEMO_status": "AVAILABLE",
+                "SYNTHETIC_DEMO_current_load": "LOW",
+                "SYNTHETIC_DEMO_specialties": [
+                    "General Medicine"
+                ]
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    81.64658,
+                    21.21321
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "hospital_id": "H005",
+                "name": "Shri Medishine Hospital",
+                "SYNTHETIC_DEMO_available_beds": 32,
+                "SYNTHETIC_DEMO_icu_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_oxygen_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_emergency_capability": true,
+                "SYNTHETIC_DEMO_trauma_capability": false,
+                "SYNTHETIC_DEMO_status": "AVAILABLE",
+                "SYNTHETIC_DEMO_current_load": "LOW",
+                "SYNTHETIC_DEMO_specialties": [
+                    "General Medicine"
+                ]
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    81.59765,
+                    21.24032
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "hospital_id": "H006",
+                "name": "Balco Medical Centre",
+                "SYNTHETIC_DEMO_available_beds": 25,
+                "SYNTHETIC_DEMO_icu_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_oxygen_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_emergency_capability": true,
+                "SYNTHETIC_DEMO_trauma_capability": false,
+                "SYNTHETIC_DEMO_status": "AVAILABLE",
+                "SYNTHETIC_DEMO_current_load": "LOW",
+                "SYNTHETIC_DEMO_specialties": [
+                    "General Medicine"
+                ]
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    81.79255,
+                    21.16434
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "hospital_id": "H007",
+                "name": "Suyash Hospital",
+                "SYNTHETIC_DEMO_available_beds": 11,
+                "SYNTHETIC_DEMO_icu_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_oxygen_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_emergency_capability": true,
+                "SYNTHETIC_DEMO_trauma_capability": false,
+                "SYNTHETIC_DEMO_status": "AVAILABLE",
+                "SYNTHETIC_DEMO_current_load": "LOW",
+                "SYNTHETIC_DEMO_specialties": [
+                    "General Medicine"
+                ]
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    81.60421,
+                    21.25881
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "hospital_id": "H008",
+                "name": "Vidya Hospital",
+                "SYNTHETIC_DEMO_available_beds": 30,
+                "SYNTHETIC_DEMO_icu_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_oxygen_availability": "AVAILABLE",
+                "SYNTHETIC_DEMO_emergency_capability": true,
+                "SYNTHETIC_DEMO_trauma_capability": false,
+                "SYNTHETIC_DEMO_status": "AVAILABLE",
+                "SYNTHETIC_DEMO_current_load": "LOW",
+                "SYNTHETIC_DEMO_specialties": [
+                    "General Medicine"
+                ]
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    81.65982,
+                    21.26733
+                ]
+            }
+        }
+    ]
+}

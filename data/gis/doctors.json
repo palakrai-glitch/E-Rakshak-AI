@@ -1,0 +1,66 @@
+[
+    {
+        "doctor_id": "D001",
+        "name": "Dr. Rajesh Sharma",
+        "specialty": "Cardiology",
+        "hospital_id": "H001",
+        "verification_status": "SYNTHETIC_DEMO",
+        "qualifications": "MD, DM (Cardiology)"
+    },
+    {
+        "doctor_id": "D002",
+        "name": "Dr. Anita Verma",
+        "specialty": "Neurology",
+        "hospital_id": "H001",
+        "verification_status": "SYNTHETIC_DEMO",
+        "qualifications": "MD, DM (Neurology)"
+    },
+    {
+        "doctor_id": "D003",
+        "name": "Dr. Prakash Patel",
+        "specialty": "Orthopedics",
+        "hospital_id": "H002",
+        "verification_status": "SYNTHETIC_DEMO",
+        "qualifications": "MS (Orthopedics)"
+    },
+    {
+        "doctor_id": "D004",
+        "name": "Dr. Sunita Deshmukh",
+        "specialty": "General Surgery",
+        "hospital_id": "H003",
+        "verification_status": "SYNTHETIC_DEMO",
+        "qualifications": "MS (Surgery)"
+    },
+    {
+        "doctor_id": "D005",
+        "name": "Dr. Rakesh Singh",
+        "specialty": "Emergency Medicine",
+        "hospital_id": "H003",
+        "verification_status": "SYNTHETIC_DEMO",
+        "qualifications": "MD (Emergency Medicine)"
+    },
+    {
+        "doctor_id": "D006",
+        "name": "Dr. Meenakshi Iyer",
+        "specialty": "Pediatrics",
+        "hospital_id": "H004",
+        "verification_status": "SYNTHETIC_DEMO",
+        "qualifications": "MD (Pediatrics)"
+    },
+    {
+        "doctor_id": "D007",
+        "name": "Dr. Vikas Agarwal",
+        "specialty": "Trauma Surgery",
+        "hospital_id": "H005",
+        "verification_status": "SYNTHETIC_DEMO",
+        "qualifications": "MS, MCh (Trauma)"
+    },
+    {
+        "doctor_id": "D008",
+        "name": "Dr. Neha Gupta",
+        "specialty": "Oncology",
+        "hospital_id": "H006",
+        "verification_status": "SYNTHETIC_DEMO",
+        "qualifications": "MD, DM (Oncology)"
+    }
+]
