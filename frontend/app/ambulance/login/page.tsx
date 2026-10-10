@@ -30,16 +30,15 @@ export default function AmbulanceLogin() {
   };
 
   return (
-    <div className="flex-1 bg-bg-main flex items-center justify-center min-h-[calc(100vh-4rem)] p-4 relative overflow-hidden">
-      {/* Decorative Background */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-primary/10 rounded-full blur-[100px] pointer-events-none" />
+    <div className="flex-1 bg-bg-main flex items-center justify-center min-h-[calc(100vh-68px)] p-4 relative overflow-hidden">
+      
 
       <div className="w-full max-w-md relative z-10">
-        <div className="glass-panel p-8 rounded-2xl border border-border-strong shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-primary" />
+        <div className="glass-panel p-6 sm:p-8 rounded-xl relative overflow-hidden">
+          
           
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-brand-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-brand-primary/20">
+            <div className="w-12 h-12 bg-brand-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4 border border-brand-primary/20">
               <ShieldAlert className="w-8 h-8 text-brand-primary" />
             </div>
             <h1 className="text-2xl font-bold text-text-primary mb-2">Ambulance Portal</h1>
@@ -62,7 +61,7 @@ export default function AmbulanceLogin() {
                 placeholder="e.g. AMB-001"
                 value={ambulanceId}
                 onChange={(e) => setAmbulanceId(e.target.value)}
-                className="w-full bg-bg-surface border border-border-strong rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all font-mono placeholder:font-sans"
+                className="w-full bg-bg-surface border border-border-strong rounded-lg px-4 py-3 text-text-primary focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors font-mono placeholder:font-sans"
                 required
               />
             </div>
@@ -77,7 +76,7 @@ export default function AmbulanceLogin() {
                   placeholder="Enter secure password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-bg-surface border border-border-strong rounded-xl pl-10 pr-4 py-3 text-text-primary focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-all"
+                  className="w-full bg-bg-surface border border-border-strong rounded-lg pl-10 pr-4 py-3 text-text-primary focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary transition-colors"
                   required
                 />
                 <KeyRound size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted" />
@@ -87,7 +86,7 @@ export default function AmbulanceLogin() {
             <button
               type="submit"
               disabled={loading || !ambulanceId || !password}
-              className="w-full mt-4 py-3.5 bg-brand-primary hover:bg-brand-accent text-white rounded-xl font-bold transition-all shadow-lg shadow-brand-primary/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full mt-4 py-3.5 bg-brand-primary hover:bg-brand-accent text-white rounded-lg font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>

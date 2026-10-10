@@ -1,173 +1,155 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { 
-  Activity, 
-  Map as MapIcon, 
-  FileText, 
-  LayoutDashboard, 
-  Stethoscope,
-  Moon,
-  Sun,
-  Menu,
-  X,
-  Ambulance,
-  Shield
+import {
+  Activity, Truck, FileText, LayoutDashboard, Menu, Moon, ShieldCheck,
+  Stethoscope, Sun, X, ClipboardList,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasAmbulanceSession, setHasAmbulanceSession] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const token = localStorage.getItem("ambulance_token");
-    setHasAmbulanceSession(!!token);
+    try {
+      setHasAmbulanceSession(Boolean(localStorage.getItem("ambulance_token")));
+    } catch (error) {
+      console.warn("localStorage not available:", error);
+    }
+    setIsMobileMenuOpen(false);
   }, [pathname]);
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
   const navLinks = [
     { name: "Overview", href: "/", icon: LayoutDashboard },
-    { name: "Intake", href: "/intake", icon: FileText },
-    { name: "Resource Registry", href: "/resources", icon: Stethoscope },
+    { name: "Emergency intake", href: "/intake", icon: FileText },
+    { name: "Incidents", href: "/cases", icon: ClipboardList },
+    { name: "Resources", href: "/resources", icon: Stethoscope },
   ];
 
-  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+  const renderLink = (link: { name: string, href: string, icon: React.ElementType }, isMobile: boolean = false) => {
+    const Icon = link.icon;
+    const active = isActive(link.href);
+    
+    if (isMobile) {
+      return (
+        <Link key={link.name} href={link.href} aria-current={active ? "page" : undefined}
+          onClick={() => setIsMobileMenuOpen(false)}
+          className={`flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-semibold ${
+            active ? "bg-brand-primary/10 text-brand-primary" : "text-text-secondary hover:bg-bg-elevated"
+          }`}>
+          <Icon size={18} aria-hidden="true" />{link.name}
+        </Link>
+      );
+    }
+    
+    return (
+      <Link key={link.name} href={link.href} aria-current={active ? "page" : undefined}
+        className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-[13px] font-semibold transition-colors ${
+          active ? "bg-brand-primary/10 text-brand-primary" : "text-text-secondary hover:bg-bg-elevated hover:text-text-primary"
+        }`}>
+        <Icon size={16} aria-hidden="true" />{link.name}
+      </Link>
+    );
+  };
+
+  const isDark = mounted && resolvedTheme === "dark";
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-50 w-full border-b border-border-subtle bg-bg-surface/80 backdrop-blur">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-8 h-8 rounded bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center text-white shadow-lg">
-                <Activity size={18} strokeWidth={2.5} />
-              </div>
-              <span className="font-bold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-text-primary to-text-secondary">
-                E-Rakshak AI
+    <div className="min-h-screen flex flex-col bg-bg-main text-text-primary">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-bg-surface focus:px-4 focus:py-2 focus:shadow-lg">
+        Skip to content
+      </a>
+      <header className="sticky top-0 z-50 w-full border-b border-border-subtle bg-bg-surface">
+        <div className="mx-auto flex h-[68px] max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+          <div className="flex min-w-0 items-center gap-7">
+            <Link href="/" aria-label="E-Rakshak AI home" className="flex shrink-0 items-center gap-2.5">
+              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-primary text-white">
+                <Activity size={19} strokeWidth={2.4} aria-hidden="true" />
+              </span>
+              <span className="leading-tight">
+                <span className="block text-[15px] font-bold tracking-tight text-text-primary">E-Rakshak AI</span>
+                <span className="hidden text-[10px] font-medium tracking-wide text-text-muted sm:block">EMERGENCY CARE COORDINATION</span>
               </span>
             </Link>
-
-            <nav className="hidden md:flex items-center gap-1">
-              {navLinks.map((link) => {
-                const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
-                const Icon = link.icon;
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={cn(
-                      "flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
-                      isActive 
-                        ? "bg-brand-primary/10 text-brand-primary" 
-                        : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
-                    )}
-                  >
-                    <Icon size={16} />
-                    {link.name}
-                  </Link>
-                );
-              })}
+            <nav aria-label="Main navigation" className="hidden items-center gap-1 lg:flex">
+              {navLinks.map(link => renderLink(link))}
             </nav>
           </div>
-
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
+            <Link href="/intake" className="hidden items-center gap-2 rounded-lg bg-status-danger px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-700 sm:inline-flex mr-2">
+              <Activity size={16} aria-hidden="true" />Report emergency
+            </Link>
+            
+            <Link
+              href={hasAmbulanceSession ? "/ambulance/dashboard" : "/ambulance/login"}
+              className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-md bg-status-info/10 text-status-info hover:bg-status-info/20 text-sm font-semibold transition-colors"
+            >
+              <Truck size={16} aria-hidden="true" />
+              Ambulance
+            </Link>
+            <Link
+              href="/admin"
+              className="hidden md:flex items-center gap-2 px-3 py-1.5 mr-2 rounded-md bg-brand-secondary/10 text-brand-secondary hover:bg-brand-secondary/20 text-sm font-semibold transition-colors"
+            >
+              <ShieldCheck size={16} aria-hidden="true" />
+              Admin
+            </Link>
+            
             {mounted && (
-              <>
-                <Link
-                  href={hasAmbulanceSession ? "/ambulance/dashboard" : "/ambulance/login"}
-                  className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-md bg-status-info/10 text-status-info hover:bg-status-info/20 text-sm font-semibold transition-colors"
-                >
-                  <Ambulance size={16} />
-                  Ambulance Portal
-                </Link>
-                <Link
-                  href="/admin"
-                  className="hidden md:flex items-center gap-2 px-3 py-1.5 mr-2 rounded-md bg-brand-secondary/10 text-brand-secondary hover:bg-brand-secondary/20 text-sm font-semibold transition-colors"
-                >
-                  <Shield size={16} />
-                  Admin Portal
-                </Link>
-              </>
-            )}
-            {mounted && (
-              <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2 rounded-md text-text-secondary hover:bg-bg-elevated hover:text-text-primary transition-colors focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
-                aria-label="Toggle theme"
-                title="Toggle theme"
-              >
-                {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+              <button type="button" onClick={() => setTheme(isDark ? "light" : "dark")}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border-subtle text-text-secondary transition-colors hover:bg-brand-primary/10 hover:text-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/50"
+                aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+                title={isDark ? "Switch to light theme" : "Switch to dark theme"}>
+                {isDark ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}
               </button>
             )}
-            
-            <button
-              className="md:hidden p-2 text-text-secondary hover:text-text-primary"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            <button type="button" className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border-subtle text-text-secondary transition-colors hover:bg-bg-elevated hover:text-text-primary lg:hidden"
+              onClick={() => setIsMobileMenuOpen((open) => !open)}
+              aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isMobileMenuOpen} aria-controls="mobile-navigation">
+              {isMobileMenuOpen ? <X size={19} /> : <Menu size={19} />}
             </button>
           </div>
         </div>
-
-        {/* Mobile menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-border-subtle bg-bg-surface px-4 py-4 space-y-1">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href || (link.href !== "/" && pathname.startsWith(link.href));
-              const Icon = link.icon;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={closeMobileMenu}
-                  className={cn(
-                    "flex items-center gap-3 px-3 py-3 rounded-md text-base font-medium transition-colors",
-                    isActive 
-                      ? "bg-brand-primary/10 text-brand-primary" 
-                      : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
-                  )}
-                >
-                  <Icon size={18} />
-                  {link.name}
-                </Link>
-              );
-            })}
-            
-            {/* Mobile Ambulance Portal Link */}
+        {isMobileMenuOpen && <div id="mobile-navigation" className="border-t border-border-subtle bg-bg-surface px-4 py-3 shadow-sm lg:hidden">
+          <nav aria-label="Mobile navigation" className="mx-auto flex max-w-[1440px] flex-col gap-1">
+            {navLinks.map(link => renderLink(link, true))}
             {mounted && (
               <>
                 <Link
                   href={hasAmbulanceSession ? "/ambulance/dashboard" : "/ambulance/login"}
-                  onClick={closeMobileMenu}
-                  className="flex items-center gap-3 px-3 py-3 rounded-md text-base font-medium transition-colors text-status-info hover:bg-status-info/10"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-semibold text-status-info hover:bg-bg-elevated"
                 >
-                  <Ambulance size={18} />
-                  Ambulance Portal
+                  <Truck size={18} aria-hidden="true" />Ambulance
                 </Link>
                 <Link
                   href="/admin"
-                  onClick={closeMobileMenu}
-                  className="flex items-center gap-3 px-3 py-3 rounded-md text-base font-medium transition-colors text-brand-secondary hover:bg-brand-secondary/10"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-semibold text-brand-secondary hover:bg-bg-elevated"
                 >
-                  <Shield size={18} />
-                  Admin Portal
+                  <ShieldCheck size={18} aria-hidden="true" />Admin
                 </Link>
               </>
             )}
-          </div>
-        )}
+            <Link href="/intake" onClick={() => setIsMobileMenuOpen(false)}
+              className="mt-1 flex items-center justify-center gap-2 rounded-lg bg-status-danger px-4 py-3 text-sm font-semibold text-white">
+              <Activity size={17} aria-hidden="true" />Report emergency
+            </Link>
+          </nav>
+        </div>}
       </header>
-
-      <main className="flex-1 flex flex-col w-full">
-        {children}
-      </main>
+      <main id="main-content" className="min-w-0 flex-1">{children}</main>
     </div>
   );
 }

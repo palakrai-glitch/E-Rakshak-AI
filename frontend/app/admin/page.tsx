@@ -47,7 +47,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-bg-base flex flex-col items-center py-10 px-4">
+    <div className="min-h-[calc(100vh-68px)] bg-bg-main flex flex-col items-center py-8 sm:py-10 px-4">
       <div className="max-w-5xl w-full">
         <div className="flex items-center justify-between mb-10">
           <div className="flex items-center gap-3">
@@ -55,7 +55,7 @@ export default function AdminDashboard() {
               <ShieldCheck size={28} />
             </div>
             <div>
-              <h1 className="text-3xl font-extrabold text-text-primary tracking-tight">Admin Portal</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-text-primary tracking-tight">Admin Portal</h1>
               <p className="text-text-secondary">System operations & resource orchestration</p>
             </div>
           </div>
@@ -68,13 +68,13 @@ export default function AdminDashboard() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in slide-in-from-bottom-8 fade-in duration-500">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {dashboardCards.map((card, i) => (
-            <div key={i} className="glass-panel p-8 flex flex-col h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-border-glass group">
-              <div className={cn("w-14 h-14 rounded-xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300", card.bg, card.color)}>
+            <div key={i} className="glass-panel p-6 sm:p-7 flex flex-col h-full transition-colors hover:border-border-strong group">
+              <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center mb-5", card.bg, card.color)}>
                 <card.icon size={26} strokeWidth={2.5} />
               </div>
-              <h3 className="text-xl font-bold text-text-primary mb-3">{card.title}</h3>
+              <h3 className="text-lg font-bold text-text-primary mb-2">{card.title}</h3>
               <p className="text-text-secondary leading-relaxed mb-8 flex-1 text-sm font-medium">
                 {card.description}
               </p>

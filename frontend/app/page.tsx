@@ -2,240 +2,157 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { 
-  ShieldAlert, 
-  Map as MapIcon, 
-  Network, 
-  Activity, 
-  Ambulance, 
-  Building2, 
-  UserRound,
-  ArrowRight,
-  Zap,
-  Globe2,
-  Stethoscope
+import {
+  Activity, Ambulance, ArrowRight, Building2, CheckCircle2, ClipboardList,
+  FileText, MapPin, ShieldAlert, Stethoscope,
 } from "lucide-react";
-import { 
-  getHospitals, 
-  getDoctors, 
-  getAmbulances, 
-  listEmergencyCases 
-} from "@/lib/api";
+import { getHospitals, getDoctors, getAmbulances, listEmergencyCases } from "@/lib/api";
+
+type MetricValue = number | null;
 
 export default function HomePage() {
-  const [metrics, setMetrics] = useState({
-    activeCases: 0,
-    hospitals: 0,
-    doctors: 0,
-    ambulances: 0,
+  const [metrics, setMetrics] = useState<{ cases: MetricValue; hospitals: MetricValue; doctors: MetricValue; ambulances: MetricValue; }>({
+    cases: null, hospitals: null, doctors: null, ambulances: null,
   });
   const [loading, setLoading] = useState(true);
+  const [hasLoadError, setHasLoadError] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
     async function fetchMetrics() {
       try {
-        const [casesRes, hospRes, docRes, ambRes] = await Promise.all([
-          listEmergencyCases(),
-          getHospitals(),
-          getDoctors(),
-          getAmbulances()
-        ]);
-        
-        setMetrics({
-          activeCases: casesRes.ok ? casesRes.data.cases.length : 0,
-          hospitals: hospRes.ok ? hospRes.data.length : 0,
-          doctors: docRes.ok ? docRes.data.length : 0,
-          ambulances: ambRes.ok ? ambRes.data.length : 0,
-        });
-      } catch (error) {
-        console.error("Failed to load metrics", error);
+        const results = await Promise.allSettled([listEmergencyCases(), getHospitals(), getDoctors(), getAmbulances()]);
+        if (cancelled) return;
+        const [casesResult, hospitalsResult, doctorsResult, ambulancesResult] = results;
+        const cases = casesResult.status === "fulfilled" && casesResult.value.ok ? casesResult.value.data.cases.length : null;
+        const hospitals = hospitalsResult.status === "fulfilled" && hospitalsResult.value.ok ? hospitalsResult.value.data.length : null;
+        const doctors = doctorsResult.status === "fulfilled" && doctorsResult.value.ok ? doctorsResult.value.data.length : null;
+        const ambulances = ambulancesResult.status === "fulfilled" && ambulancesResult.value.ok ? ambulancesResult.value.data.length : null;
+        setMetrics({ cases, hospitals, doctors, ambulances });
+        setHasLoadError([cases, hospitals, doctors, ambulances].some((value) => value === null));
+      } catch {
+        if (!cancelled) setHasLoadError(true);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
-    
     fetchMetrics();
+    return () => { cancelled = true; };
   }, []);
 
-  return (
-    <div className="flex flex-col min-h-[calc(100vh-4rem)] relative overflow-hidden">
-      {/* Decorative Background Gradients */}
-      <div className="absolute inset-0 z-0 bg-bg-main pointer-events-none">
-        <div className="absolute top-[-15%] left-[-10%] w-[50%] h-[50%] rounded-full bg-brand-primary/10 blur-[120px] mix-blend-screen opacity-70" />
-        <div className="absolute bottom-[-10%] right-[-5%] w-[45%] h-[45%] rounded-full bg-brand-secondary/15 blur-[120px] mix-blend-screen opacity-70" />
-        <div className="absolute top-[30%] left-[40%] w-[30%] h-[30%] rounded-full bg-blue-accent/10 blur-[100px] opacity-50" />
-        {/* Subtle grid pattern overlay */}
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-5 dark:opacity-10"></div>
+  const metricCards = [
+    { label: "Cases recorded", value: metrics.cases, icon: ClipboardList },
+    { label: "Hospitals listed", value: metrics.hospitals, icon: Building2 },
+    { label: "Doctors listed", value: metrics.doctors, icon: Stethoscope },
+    { label: "Ambulances listed", value: metrics.ambulances, icon: Ambulance },
+  ];
+  const workflows = [
+    { eyebrow: "PATIENT INTAKE", title: "Report an emergency", description: "Record emergency details, symptoms and patient location in the guided intake flow.", href: "/intake", action: "Start emergency intake", icon: ShieldAlert, iconClass: "bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-300" },
+    { eyebrow: "OPERATIONS", title: "Review incidents", description: "Open existing cases and continue to triage, resource matching and care coordination.", href: "/cases", action: "View incidents", icon: ClipboardList, iconClass: "bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300" },
+    { eyebrow: "RESOURCE DIRECTORY", title: "Explore resources", description: "Review hospital, doctor and ambulance records in the resource registry.", href: "/resources", action: "Open resource registry", icon: MapPin, iconClass: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200" },
+  ];
+
+  return <div className="mx-auto w-full max-w-[1440px] px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+    <section className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(300px,0.75fr)] lg:gap-12">
+      <div className="max-w-3xl">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border-subtle bg-bg-surface px-3 py-1.5 text-xs font-semibold text-text-secondary">
+          <span className="h-2 w-2 rounded-full bg-brand-primary" />Emergency care coordination platform
+        </div>
+        <h1 className="max-w-3xl text-3xl font-bold leading-tight tracking-tight text-text-primary sm:text-4xl lg:text-[46px]">
+          Get the right emergency care, with less delay.
+        </h1>
+        <p className="mt-4 max-w-2xl text-base leading-7 text-text-secondary sm:text-lg">
+          Record an emergency, review available resources and coordinate the next steps from one workspace.
+        </p>
+        <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+          <Link href="/intake" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-status-danger px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700">
+            <ShieldAlert size={18} aria-hidden="true" />Report an emergency<ArrowRight size={16} aria-hidden="true" />
+          </Link>
+          <Link href="/cases" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-border-strong bg-bg-surface px-5 py-3 text-sm font-semibold text-text-primary transition-colors hover:bg-bg-elevated">
+            <ClipboardList size={18} aria-hidden="true" />View incidents
+          </Link>
+        </div>
+        <p className="mt-4 max-w-xl text-xs leading-5 text-text-muted">
+          E-Rakshak AI is a coordination platform and does not replace emergency services. For immediate life-threatening emergencies in India, call 112.
+        </p>
       </div>
 
-      <div className="container mx-auto px-4 py-16 md:py-24 flex-1 flex flex-col relative z-10">
-        
-        {/* Hero Section */}
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-16 max-w-7xl mx-auto w-full mb-24">
-          
-          <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-bg-surface border border-brand-primary/20 text-brand-primary text-sm font-bold tracking-wide shadow-sm mb-8 animate-in slide-in-from-bottom-4 fade-in duration-500">
-              <span className="relative flex h-2 w-2 rounded-full bg-brand-primary">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
-              </span>
-              E-Rakshak AI V2.0 LIVE
-            </div>
-            
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-text-primary leading-[1.1] animate-in slide-in-from-bottom-6 fade-in duration-700">
-              Coordinating <br/> Emergency Care. <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-blue-accent to-brand-secondary">Faster.</span>
-            </h1>
-            
-            <p className="text-lg md:text-xl text-text-secondary max-w-xl mb-10 leading-relaxed font-medium animate-in slide-in-from-bottom-8 fade-in duration-700 delay-100">
-              The next-generation operations command center. Location-aware intake, precision hospital matching, and real-time autonomous care orchestration.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto animate-in slide-in-from-bottom-10 fade-in duration-700 delay-200">
-              <Link 
-                href="/intake"
-                className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-brand-primary to-brand-secondary hover:opacity-90 text-white font-bold transition-all shadow-[0_0_30px_rgba(102,126,234,0.3)] hover:shadow-[0_0_40px_rgba(102,126,234,0.5)] hover:-translate-y-1"
-              >
-                <ShieldAlert size={20} />
-                Report Emergency
-              </Link>
-              <Link 
-                href="/resources"
-                className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-bg-surface border border-border-strong hover:bg-bg-elevated hover:border-brand-primary/40 text-text-primary font-bold transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5"
-              >
-                Open Dashboard
-                <ArrowRight size={20} className="text-text-muted" />
-              </Link>
-            </div>
+      <aside className="rounded-xl border border-border-subtle bg-bg-surface p-5 sm:p-6">
+        <div className="flex items-start gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300">
+            <Activity size={20} aria-hidden="true" />
           </div>
-
-          {/* Product Preview Card */}
-          <div className="flex-1 w-full max-w-2xl animate-in fade-in zoom-in-95 duration-1000 delay-300">
-            <div className="glass-panel border-brand-primary/20 shadow-2xl relative overflow-hidden rounded-2xl group">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-primary via-blue-accent to-brand-secondary opacity-50 group-hover:opacity-100 transition-opacity"></div>
-              
-              <div className="p-4 border-b border-border-subtle bg-bg-surface/50 flex items-center justify-between">
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-status-danger/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-status-warning/80"></div>
-                  <div className="w-3 h-3 rounded-full bg-status-success/80"></div>
-                </div>
-                <div className="text-[10px] font-bold tracking-widest uppercase text-text-muted">Live Telemetry Preview</div>
-              </div>
-
-              <div className="p-6 md:p-8 bg-bg-secondary/20">
-                <div className="flex items-center justify-between mb-8 relative">
-                  {/* Pathway Graphic */}
-                  <div className="absolute top-1/2 left-0 w-full h-[2px] bg-gradient-to-r from-status-danger via-status-warning to-status-success -translate-y-1/2 opacity-50 z-0 rounded"></div>
-                  
-                  <div className="relative z-10 w-14 h-14 rounded-full bg-status-danger/10 border-2 border-bg-surface ring-2 ring-status-danger/30 flex items-center justify-center shadow-lg transform transition-transform hover:scale-110">
-                    <Activity size={24} className="text-status-danger animate-pulse" />
-                  </div>
-                  <div className="relative z-10 w-14 h-14 rounded-full bg-status-warning/10 border-2 border-bg-surface ring-2 ring-status-warning/30 flex items-center justify-center shadow-lg transform transition-transform hover:scale-110">
-                    <Ambulance size={24} className="text-status-warning" />
-                  </div>
-                  <div className="relative z-10 w-14 h-14 rounded-full bg-status-success/10 border-2 border-bg-surface ring-2 ring-status-success/30 flex items-center justify-center shadow-lg transform transition-transform hover:scale-110">
-                    <Building2 size={24} className="text-status-success" />
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="bg-bg-surface border border-border-strong rounded-lg p-3 flex justify-between items-center shadow-sm">
-                    <div className="flex items-center gap-3">
-                      <div className="p-1.5 bg-brand-primary/10 rounded text-brand-primary"><Globe2 size={16} /></div>
-                      <div>
-                        <div className="text-sm font-bold text-text-primary">Dispatch Optimal Route</div>
-                        <div className="text-xs text-text-secondary">AI-calculated vector ETA 4m 12s</div>
-                      </div>
-                    </div>
-                    <span className="text-xs font-mono font-bold bg-status-success/10 text-status-success px-2 py-1 rounded">MATCH</span>
-                  </div>
-                  <div className="bg-bg-surface border border-border-strong rounded-lg p-3 flex justify-between items-center shadow-sm">
-                    <div className="flex items-center gap-3">
-                      <div className="p-1.5 bg-status-warning/10 rounded text-status-warning"><Zap size={16} /></div>
-                      <div>
-                        <div className="text-sm font-bold text-text-primary">Real-time Load Balancing</div>
-                        <div className="text-xs text-text-secondary">Diverting from saturated ICU</div>
-                      </div>
-                    </div>
-                    <span className="text-xs font-mono font-bold bg-status-warning/10 text-status-warning px-2 py-1 rounded">REROUTE</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div>
+            <h2 className="text-base font-semibold text-text-primary">Coordination workflow</h2>
+            <p className="mt-1 text-sm leading-6 text-text-secondary">Follow the existing workflow from case intake through triage, matching and care pathway review.</p>
           </div>
         </div>
-
-        {/* Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto w-full mb-20 animate-in slide-in-from-bottom-12 fade-in duration-700 delay-500">
+        <ol className="mt-5 space-y-4">
           {[
-            {
-              title: "Emergency Intelligence",
-              description: "Structured medical intake, precision patient location resolution via GIS, and instant algorithmic clinical triage.",
-              icon: ShieldAlert,
-              href: "/intake",
-              linkText: "Start Intake Workflow",
-              color: "text-brand-primary",
-              bg: "bg-brand-primary/10"
-            },
-            {
-              title: "Real-Time Orchestration",
-              description: "Autonomous ranking of optimal care pathways via WebSocket state sync for live hospital and doctor availability.",
-              icon: Network,
-              href: "/resources",
-              linkText: "Explore Registry",
-              color: "text-brand-secondary",
-              bg: "bg-brand-secondary/10"
-            }
-          ].map((feature, i) => (
-            <div key={i} className="glass-panel p-8 flex flex-col h-full transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-border-glass group relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-2xl -mr-10 -mt-10 transition-opacity opacity-0 group-hover:opacity-100"></div>
-              
-              <div className={`w-14 h-14 rounded-xl ${feature.bg} flex items-center justify-center ${feature.color} mb-6 shadow-sm border border-white/5 group-hover:scale-110 transition-transform duration-300`}>
-                <feature.icon size={26} strokeWidth={2.5} />
+            { title: "Capture the emergency", detail: "Patient details and location", icon: FileText },
+            { title: "Review priority", detail: "Use the available triage result", icon: Activity },
+            { title: "Coordinate resources", detail: "Review matching and care options", icon: Ambulance },
+            { title: "Review the care pathway", detail: "Confirm next steps in the case workflow", icon: CheckCircle2 },
+          ].map((step) => {
+            const Icon = step.icon;
+            return <li key={step.title} className="flex items-start gap-3">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border-subtle bg-bg-elevated text-text-secondary">
+                <Icon size={16} aria-hidden="true" />
+              </span>
+              <div className="min-w-0 flex-1 pt-0.5">
+                <div className="text-sm font-semibold text-text-primary">{step.title}</div>
+                <div className="mt-0.5 text-xs leading-5 text-text-muted">{step.detail}</div>
               </div>
-              <h3 className="text-xl font-bold text-text-primary mb-3">{feature.title}</h3>
-              <p className="text-text-secondary leading-relaxed mb-8 flex-1 text-sm font-medium">
-                {feature.description}
-              </p>
-              <Link 
-                href={feature.href}
-                className={`inline-flex items-center gap-2 text-sm font-bold ${feature.color} hover:opacity-80 transition-opacity mt-auto`}
-              >
-                {feature.linkText}
-                <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-          ))}
-        </div>
+            </li>;
+          })}
+        </ol>
+      </aside>
+    </section>
 
-        {/* System Metrics */}
-        <div className="max-w-7xl mx-auto w-full border-t border-border-subtle pt-16">
-          <h3 className="text-center text-sm font-bold uppercase tracking-widest text-text-muted mb-8">Live Platform Telemetry</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {[
-              { label: "Active Incidents", value: metrics.activeCases, icon: Activity, color: "text-status-danger" },
-              { label: "Network Hospitals", value: metrics.hospitals, icon: Building2, color: "text-brand-primary" },
-              { label: "Specialists Online", value: metrics.doctors, icon: Stethoscope, color: "text-brand-secondary" },
-              { label: "Units Deployed", value: metrics.ambulances, icon: Ambulance, color: "text-status-info" },
-            ].map((metric, i) => (
-              <div key={i} className="bg-bg-surface border border-border-strong rounded-2xl p-6 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
-                <metric.icon size={24} className={`mb-4 ${metric.color} opacity-80`} />
-                {loading ? (
-                  <div className="h-10 w-20 bg-bg-secondary rounded animate-pulse mb-1" />
-                ) : (
-                  <span className="text-4xl font-extrabold text-text-primary mb-1 tracking-tight">{metric.value}</span>
-                )}
-                <span className="text-[11px] font-bold text-text-muted uppercase tracking-wider">{metric.label}</span>
-                
-                <div className="absolute top-3 right-3">
-                  <span className="text-[9px] text-text-muted px-1.5 py-0.5 rounded bg-bg-secondary border border-border-subtle font-mono font-bold tracking-widest">DEMO</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
+    <section aria-labelledby="workspace-heading" className="mt-10 sm:mt-12">
+      <div className="mb-4">
+        <h2 id="workspace-heading" className="text-lg font-bold tracking-tight text-text-primary">Workspace</h2>
+        <p className="mt-1 text-sm text-text-secondary">Choose where you need to work next.</p>
       </div>
-    </div>
-  );
+      <div className="grid gap-4 md:grid-cols-3">
+        {workflows.map((workflow) => {
+          const Icon = workflow.icon;
+          return <article key={workflow.title} className="flex min-w-0 flex-col rounded-xl border border-border-subtle bg-bg-surface p-5 transition-colors hover:border-border-strong sm:p-6">
+            <div className={`mb-4 flex h-10 w-10 items-center justify-center rounded-lg ${workflow.iconClass}`}><Icon size={20} aria-hidden="true" /></div>
+            <p className="text-[10px] font-bold tracking-[0.12em] text-text-muted">{workflow.eyebrow}</p>
+            <h3 className="mt-2 text-base font-bold text-text-primary">{workflow.title}</h3>
+            <p className="mt-2 flex-1 text-sm leading-6 text-text-secondary">{workflow.description}</p>
+            <Link href={workflow.href} className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand-primary hover:underline">
+              {workflow.action}<ArrowRight size={15} aria-hidden="true" />
+            </Link>
+          </article>;
+        })}
+      </div>
+    </section>
+
+    <section aria-labelledby="registry-heading" className="mt-10 sm:mt-12">
+      <div className="mb-4">
+        <h2 id="registry-heading" className="text-lg font-bold tracking-tight text-text-primary">Registry overview</h2>
+        <p className="mt-1 text-sm text-text-secondary">Counts returned by the connected API. Unavailable values are shown as a dash, not as zero.</p>
+      </div>
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        {metricCards.map((metric) => {
+          const Icon = metric.icon;
+          return <div key={metric.label} className="rounded-xl border border-border-subtle bg-bg-surface p-4 sm:p-5">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-medium text-text-secondary sm:text-sm">{metric.label}</span>
+              <Icon size={17} className="shrink-0 text-text-muted" aria-hidden="true" />
+            </div>
+            <div aria-live="polite" className="mt-3 text-2xl font-bold tracking-tight text-text-primary sm:text-3xl">
+              {loading ? <span className="inline-block h-8 w-12 animate-pulse rounded bg-bg-secondary align-middle" /> : metric.value ?? "—"}
+            </div>
+          </div>;
+        })}
+      </div>
+      <div className="mt-3 flex flex-col gap-1 text-xs text-text-muted sm:flex-row sm:items-center sm:justify-between">
+        <span>Resource records may include synthetic demo data; verify availability before operational use.</span>
+        {hasLoadError && !loading && <span role="status" className="inline-flex items-center gap-1.5 text-status-warning"><Activity size={13} aria-hidden="true" />Some data could not be loaded. Check the connection and try again.</span>}
+      </div>
+    </section>
+  </div>;
 }

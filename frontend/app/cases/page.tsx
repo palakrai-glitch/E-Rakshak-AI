@@ -95,29 +95,29 @@ export default function ActiveIncidentsDashboard() {
   };
 
   return (
-    <div className="flex-1 bg-bg-main p-4 md:p-6 lg:p-8 min-h-[calc(100vh-4rem)]">
+    <div className="flex-1 bg-bg-main p-4 md:p-6 lg:p-8 min-h-[calc(100vh-68px)]">
       <div className="max-w-7xl mx-auto space-y-6">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border-subtle pb-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border-subtle pb-5">
           <div>
-            <h1 className="text-2xl font-bold text-text-primary flex items-center gap-2 mb-1">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-text-primary flex items-center gap-2 mb-1">
               <ShieldAlert className="text-brand-primary" />
               Active Incidents
             </h1>
-            <p className="text-text-secondary text-sm font-medium">Manage and track live emergency cases across the network.</p>
+            <p className="text-text-secondary text-sm leading-6">Manage and track live emergency cases across the network.</p>
           </div>
           <div className="flex gap-3">
             <button 
               onClick={() => fetchCases()}
-              className="px-4 py-2 bg-bg-surface hover:bg-bg-elevated border border-border-strong text-text-primary rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center gap-2"
+              className="px-4 py-2 bg-bg-surface hover:bg-bg-elevated border border-border-strong text-text-primary rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
             >
               <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
               Refresh
             </button>
             <Link 
               href="/intake"
-              className="px-5 py-2 bg-brand-primary hover:bg-brand-accent text-white rounded-lg text-sm font-bold transition-all shadow-md shadow-brand-primary/20 flex items-center gap-2"
+              className="px-5 py-2 bg-brand-primary hover:bg-brand-accent text-white rounded-lg text-sm font-bold transition-all shadow-sm flex items-center gap-2"
             >
               + New Case
             </Link>

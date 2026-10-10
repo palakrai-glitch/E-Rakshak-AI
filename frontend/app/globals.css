@@ -6,124 +6,135 @@
   --color-brand-primary: var(--brand-primary);
   --color-brand-secondary: var(--brand-secondary);
   --color-brand-accent: var(--brand-accent);
-  
+  --color-blue-accent: var(--blue-accent);
+
   --color-bg-main: var(--bg-main);
   --color-bg-secondary: var(--bg-secondary);
   --color-bg-surface: var(--bg-surface);
   --color-bg-elevated: var(--bg-elevated);
   --color-bg-input: var(--bg-input);
   --color-bg-glass: var(--bg-glass);
-  
+
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
-  
+
   --color-border-subtle: var(--border-subtle);
   --color-border-strong: var(--border-strong);
   --color-border-glass: var(--border-glass);
-  
-  --color-status-success: #22c55e;
-  --color-status-warning: #f59e0b;
-  --color-status-danger: #ef4444;
-  --color-status-info: #3b82f6;
+
+  --color-status-success: #16845b;
+  --color-status-warning: #a85b08;
+  --color-status-danger: #c52b32;
+  --color-status-info: #2563eb;
 
   --font-sans: var(--font-inter), system-ui, sans-serif;
-  --font-mono: var(--font-mono), monospace;
+  --font-mono: var(--font-jetbrains-mono), monospace;
 }
 
 :root {
-  /* Light Mode Palette */
-  --brand-primary: #667EEA;
-  --brand-secondary: #764BA2;
-  --brand-accent: #635BDB;
-  --blue-accent: #3979E8;
+  color-scheme: light;
+  --brand-primary: #2457c5;
+  --brand-secondary: #1d4ed8;
+  --brand-accent: #1d4ed8;
+  --blue-accent: #2563eb;
 
-  --bg-main: #F4F6FC;
-  --bg-secondary: #EBEFF9;
-  --bg-surface: #FFFFFF;
-  --bg-elevated: #F9FAFF;
-  --bg-input: #FFFFFF;
-  --bg-glass: rgba(255, 255, 255, 0.72);
+  --bg-main: #f7f9fc;
+  --bg-secondary: #f0f4fa;
+  --bg-surface: #ffffff;
+  --bg-elevated: #f8fafc;
+  --bg-input: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.96);
 
-  --text-primary: #172033;
-  --text-secondary: #5D6880;
-  --text-muted: #8F9BB3;
+  --text-primary: #152238;
+  --text-secondary: #53647b;
+  --text-muted: #75849a;
 
-  --border-subtle: rgba(46, 61, 95, 0.12);
-  --border-strong: rgba(46, 61, 95, 0.20);
-  --border-glass: rgba(255, 255, 255, 0.75);
+  --border-subtle: #e5eaf1;
+  --border-strong: #d5deea;
+  --border-glass: #e5eaf1;
 }
 
 .dark {
-  /* Dark Mode Palette */
-  --brand-primary: #667EEA;
-  --brand-secondary: #764BA2;
-  --brand-accent: #8B7CFF;
-  --blue-accent: #65A7FF;
+  color-scheme: dark;
+  --brand-primary: #80aaff;
+  --brand-secondary: #6b9cff;
+  --brand-accent: #80aaff;
+  --blue-accent: #80aaff;
 
-  --bg-main: #080B18;
-  --bg-secondary: #0D1324;
-  --bg-surface: #121A2D;
-  --bg-elevated: #18233A;
-  --bg-input: #0F172A;
-  --bg-glass: rgba(255, 255, 255, 0.07);
+  --bg-main: #0b1220;
+  --bg-secondary: #111c2e;
+  --bg-surface: #121d2e;
+  --bg-elevated: #18263a;
+  --bg-input: #0e1929;
+  --bg-glass: rgba(18, 29, 46, 0.96);
 
-  --text-primary: #F4F7FF;
-  --text-secondary: #A6B1C8;
-  --text-muted: #6B7A99;
+  --text-primary: #f1f5fb;
+  --text-secondary: #b3c0d2;
+  --text-muted: #8c9bb0;
 
-  --border-subtle: rgba(148, 163, 184, 0.18);
-  --border-strong: rgba(148, 163, 184, 0.30);
-  --border-glass: rgba(255, 255, 255, 0.14);
+  --border-subtle: #26354a;
+  --border-strong: #34465e;
+  --border-glass: #26354a;
 }
 
 *, *::before, *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html {
-  height: 100%;
-  font-size: 16px;
+  min-height: 100%;
+  scroll-behavior: smooth;
+  background: var(--bg-main);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth;
-  /* Provide a default background color to html to prevent unstyled flashes */
-  background-color: var(--bg-main);
-  color: var(--text-primary);
 }
 
 body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--bg-main);
+  min-height: 100vh;
+  margin: 0;
+  background: var(--bg-main);
   color: var(--text-primary);
   font-family: var(--font-inter), system-ui, sans-serif;
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
-/* Transitions for dark mode toggle */
-html, body {
-  transition: background-color 0.3s ease, color 0.3s ease;
+button, input, textarea, select {
+  font: inherit;
 }
 
-/* Base Glass Card */
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button:focus-visible, a:focus-visible, input:focus-visible,
+textarea:focus-visible, select:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--brand-primary) 38%, transparent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--brand-primary) 18%, transparent);
+}
+
+/* Retained for existing pages, restyled as restrained surfaces rather than glassmorphism. */
 .glass-panel {
-  background: var(--bg-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-glass);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-  border-radius: 1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.875rem;
+  box-shadow: 0 1px 2px rgba(18, 35, 58, 0.04);
 }
 
 .dark .glass-panel {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
 }
 
-/* Global scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -133,8 +144,17 @@ html, body {
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: var(--border-strong);
-  border-radius: 4px;
+  border-radius: 6px;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

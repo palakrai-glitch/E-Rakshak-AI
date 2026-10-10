@@ -252,7 +252,7 @@ export default function IntakePage() {
     const isConfirmed = formData.patient_pathway_confirmed;
     
     return (
-      <main className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-6 bg-bg-main relative">
+      <main className="min-h-[calc(100vh-68px)] flex flex-col items-center justify-center p-6 bg-bg-main relative">
         <div className="w-full max-w-2xl glass-panel p-8 md:p-10 text-center space-y-6 relative z-10">
           <div className="mx-auto w-16 h-16 bg-brand-primary/10 text-brand-primary rounded-full flex items-center justify-center mb-4">
             <Activity size={32} />
@@ -303,7 +303,7 @@ export default function IntakePage() {
               <button 
                 onClick={handleConfirmPathway}
                 disabled={isSubmitting}
-                className="w-full py-3.5 bg-brand-primary hover:bg-brand-accent text-white rounded-xl font-bold transition-all shadow-lg shadow-brand-primary/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full py-3.5 bg-brand-primary hover:bg-brand-accent text-white rounded-xl font-bold transition-all shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isSubmitting ? <Loader2 className="animate-spin" size={20} /> : <CheckCircle2 size={20} />}
                 Confirm Care Pathway
@@ -330,7 +330,7 @@ export default function IntakePage() {
   // --- RENDERERS ---
   if (mode === "SUCCESS") {
     return (
-      <main className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-6 bg-bg-main">
+      <main className="min-h-[calc(100vh-68px)] flex flex-col items-center justify-center p-6 bg-bg-main">
         <div className="w-full max-w-lg glass-panel p-10 text-center space-y-6">
           <div className="mx-auto w-20 h-20 bg-status-success/20 text-status-success rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(34,197,94,0.3)]">
             <CheckCircle2 size={40} />
@@ -370,7 +370,7 @@ export default function IntakePage() {
 
   if (mode === "START") {
     return (
-      <main className="min-h-[calc(100vh-4rem)] bg-bg-main p-4 md:p-8 flex items-center justify-center">
+      <main className="min-h-[calc(100vh-68px)] bg-bg-main p-4 md:p-8 flex items-center justify-center">
         <div className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="glass-panel p-8 flex flex-col items-center text-center hover:border-brand-primary/50 transition-colors group cursor-pointer" onClick={() => setMode("INTAKE")}>
             <div className="w-16 h-16 rounded-2xl bg-brand-primary/10 text-brand-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -400,7 +400,7 @@ export default function IntakePage() {
 
   if (mode === "RECOVER") {
     return (
-      <main className="min-h-[calc(100vh-4rem)] bg-bg-main p-4 md:p-8 flex flex-col items-center justify-center">
+      <main className="min-h-[calc(100vh-68px)] bg-bg-main p-4 md:p-8 flex flex-col items-center justify-center">
         <div className="max-w-md w-full glass-panel p-8">
           <button onClick={() => setMode("START")} className="text-text-muted hover:text-text-primary flex items-center gap-2 text-sm font-medium mb-6">
             <ArrowLeft size={16} /> Back
@@ -455,7 +455,7 @@ export default function IntakePage() {
 
   // mode === "INTAKE"
   return (
-    <main className="min-h-[calc(100vh-4rem)] bg-bg-main p-4 md:p-8 flex justify-center">
+    <main className="min-h-[calc(100vh-68px)] bg-bg-main p-4 md:p-8 flex justify-center">
       <div className="max-w-4xl w-full">
         <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -480,7 +480,7 @@ export default function IntakePage() {
           <div className="flex justify-between relative min-w-[500px]">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-border-subtle rounded z-0" />
             <div 
-              className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-brand-primary rounded z-0 transition-all duration-300"
+              className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-brand-primary rounded z-0 transition-colors duration-150"
               style={{ width: `${((currentStep - 1) / (STEPS.length - 1)) * 100}%` }}
             />
             

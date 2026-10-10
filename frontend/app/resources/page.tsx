@@ -58,19 +58,19 @@ export default function ResourcesPage() {
   const filteredAmbulances = filterData(ambulances, ["ambulance_id", "vehicle_number", "type"]);
 
   return (
-    <div className="flex-1 bg-bg-main p-4 md:p-6 lg:p-8">
+    <div className="min-h-[calc(100vh-68px)] bg-bg-main p-4 md:p-6 lg:p-8">
       <div className="max-w-[1600px] mx-auto w-full">
         
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 border-b border-border-subtle pb-6">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-2xl font-bold text-text-primary flex items-center gap-2">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-text-primary flex items-center gap-2">
                 <Activity className="text-brand-primary" />
                 Resource Registry
               </h1>
             </div>
-            <p className="text-text-secondary text-sm">Real-time status tracking for hospitals, specialists, and dispatch units.</p>
+            <p className="text-text-secondary text-sm leading-6">Resource records for hospitals, specialists and ambulance units. Confirm operational availability before dispatch.</p>
           </div>
           
           <div className="flex items-center gap-4">
