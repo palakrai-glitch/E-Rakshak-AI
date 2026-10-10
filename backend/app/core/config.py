@@ -35,6 +35,11 @@ class Settings(BaseSettings):
     ROUTING_PROVIDER: str = "osrm"
     OSRM_BASE_URL: str = "https://router.project-osrm.org"
 
+    # ── Gemini AI (Voice Emergency Intake) ─────────────────────────────────────
+    # Required only for the /api/voice-intake/extract endpoint.
+    # If absent, that endpoint returns 503 and all other functionality is unaffected.
+    GEMINI_API_KEY: str = ""
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
