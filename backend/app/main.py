@@ -24,6 +24,7 @@ from app.api.orchestration import router as orchestration_router
 from app.api.realtime import router as realtime_router
 from app.api.location import router as location_router
 from app.api.ambulance_portal import router as ambulance_portal_router
+from app.api.voice_intake import router as voice_intake_router
 from app.core.config import settings
 
 # ── Application factory ────────────────────────────────────────────────────────
@@ -87,3 +88,5 @@ app.include_router(location_router, prefix="/api")
 app.include_router(realtime_router)
 app.include_router(ambulance_portal_router, prefix="/api")
 app.include_router(admin_router, prefix="/api")
+app.include_router(voice_intake_router, prefix="/api")
+
